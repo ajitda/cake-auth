@@ -2,6 +2,8 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;
+
 
 /**
  * Users Controller
@@ -12,6 +14,13 @@ use App\Controller\AppController;
  */
 class UsersController extends AppController
 {
+
+    
+    public function beforeFilter(Event $event)
+    {
+        $this->Auth->allow(['signup', 'forgotPassword']);
+        //$this->Auth->deny(['index']);
+    }
 
     /**
      * Index method
@@ -47,6 +56,54 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add()
+    {
+        $user = $this->Users->newEntity();
+        if ($this->request->is('post')) {
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('The user has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+        }
+        $this->set(compact('user'));
+    }
+
+
+    public function login()
+    {
+        if($this->Auth->user('id')){
+                $this->Flash->default(__('You are already Logged In'));
+                return $this->redirect(['controller'=>'Users', 'action'=> 'index']);
+
+        }
+        if($this->request->is('post')){
+        
+            $user = $this->Auth->identify();
+            if($user){
+                $this->Auth->setUser($user);
+                $this->Flash->success(__('Login successfull!'));
+                return $this->redirect(['controller'=> 'Users', 'action'=> 'index']);
+            }
+            $this->Flash->error(__('The login was not successfull!'));
+            
+        
+        }
+    }
+
+    public function forgotPassword()
+    {
+
+    }
+
+    public function logout()
+    {
+        $this->Flash->success(__('You are successfully logout!'));
+        return $this->redirect($this->Auth->logout());
+    }
+
+    public function signup()
     {
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
