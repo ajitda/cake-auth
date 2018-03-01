@@ -40,5 +40,8 @@
             <th scope="row"><?= __('Modified') ?></th>
             <td><?= h($user->modified) ?></td>
         </tr>
+        <tr>
+            <th scope="row"></th>
+        </tr>
     </table>
 </div>
