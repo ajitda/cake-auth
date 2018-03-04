@@ -35,24 +35,46 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('script') ?>
 </head>
 <body>
-    <nav class="top-bar expanded" data-topbar role="navigation">
-        <ul class="title-area large-3 medium-4 columns">
-            <li class="name">
-                <h1><a href=""><?= $this->fetch('title') ?></a></h1>
-            </li>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a href=""><?= $this->fetch('title') ?></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation" style="">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarColor02">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Pricing</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
         </ul>
-        <div class="top-bar-section">
-            <ul class="right">
-                <?php if($auth){  ?>
-                <li><a target="_blank" href="https://book.cakephp.org/3.0/">
-                    <?php echo $auth['User']['email']; ?>
-                </a></li>
-                <li>
-                    <?= $this->html->link('Logout', ['controller'=> 'Users', 'action'=> 'logout']) ?>
-                </li>
-                <?php } ?>
-            </ul>
-        </div>
+        <ul class="navbar-nav ml-auto">
+            <?php if($auth){  ?>
+            <li class="nav-item"><a class="nav-link" target="_blank" href="https://book.cakephp.org/3.0/">
+                <?php echo $auth['User']['email']; ?>
+            </a>
+        </li>
+            <li class="nav-item">
+                <?= $this->html->link('Logout', ['controller'=> 'Users', 'action'=> 'logout'], ['class'=>'nav-link']) ?>
+            </li>
+            <?php }else{ ?>
+            <li class="nav-item">
+              <?= $this->html->link('Login', ['controller'=> 'Users', 'action'=> 'login'], ['class'=> 'nav-link']); ?>
+            </li>
+            <li class="nav-item">
+              <?= $this->html->link('Forget Password', ['controller'=> 'Users', 'action'=> 'forgetPassword'], ['class'=> 'nav-link']); ?>
+            </li>
+            <?php } ?>
+        </ul>
+      </div>
     </nav>
     <?= $this->Flash->render() ?>
     <div class="container clearfix">
